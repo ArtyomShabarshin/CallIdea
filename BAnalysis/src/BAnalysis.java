@@ -34,8 +34,9 @@ public class BAnalysis extends EvalFunc<String>
 
 
     // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
-    public BAnalysis(String ConStr/*, Configuration Config*/)    throws   SQLException
+    public BAnalysis(/*String ConStr, Configuration Config*/)    throws   SQLException
     {
+    	String ConStr = "jdbc:sqlserver://localhost;databaseName=Billing;integratedSecurity=false;user=sa;password=m367st;";
         //ErrorManager.ErrorProcessor.OnWarning("BAnalysis", 10123);
         if (!m_IsCaseSensitive)
         {
@@ -143,6 +144,7 @@ public class BAnalysis extends EvalFunc<String>
             return null;
 
         String number = (String)input.get(0);
+        
         byte RecordTypeID = 0;
         byte TZoneMapID = 0;
         int ServiceGroupID = 0;
