@@ -2,14 +2,11 @@ import java.util.List;
 import java.sql.*;
 import java.util.*;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Dima
- * Date: 17.11.12
- * Time: 17:34
- * To change this template use File | Settings | File Templates.
- */
-public class BAnalysis
+import java.io.IOException;
+import org.apache.pig.EvalFunc;
+import org.apache.pig.data.Tuple;
+
+public class BAnalysis extends EvalFunc<String>
 {
     //РќРѕРјРµСЂ, РїРѕРґРјРµРЅСЏСЋС‰РёР№ Р‘-РЅРѕРјРµСЂ РЅРµ РЅР°Р№РґРµРЅРЅС‹Р№ РІ РЅР°РїСЂР°РІР»РµРЅРёСЏС…
     private String m_UndefNumber = "C";
@@ -47,7 +44,7 @@ public class BAnalysis
         LoadTable(ConStr);
 
         //ErrorManager.ErrorProcessor.OnWarning("BAnalysis loaded. " + count + " rows.", 10124);
-    }
+    }    
   
     ///Р—Р°РіСЂСѓР·РёС‚СЊ codes  
     private int LoadTable(String ConStr)  throws   SQLException
@@ -141,11 +138,27 @@ public class BAnalysis
         return count;
     }
 
+    public String exec(Tuple input) throws IOException {
+        if (input == null || input.size() == 0)
+            return null;
 
+        String number = (String)input.get(0);
+        byte RecordTypeID = 0;
+        byte TZoneMapID = 0;
+        int ServiceGroupID = 0;
+        
+        try {
+			ProcessNumber(RecordTypeID, TZoneMapID, ServiceGroupID, number);
+		} catch (Exception e) {			
+		}
+        
+        return number;
+    }
+    
     // РџСЂРёРјРµРЅРµРЅРёРµ РїСЂР°РІРёР» Р‘-Р°РЅР°Р»РёР·Р°
-    public CodeResult ProcessNumber(byte RecordTypeID, byte TZoneMapID, int ServiceGroupID, long RecordID, String Number) throws   Exception
+    public CodeResult ProcessNumber(byte RecordTypeID, byte TZoneMapID, int ServiceGroupID, String Number) throws   Exception
     {
-        final String ErrorMasg = "BAnalysis Error. BAnalysis.ProcessNumber: RecordID = %s Number = %s";
+        final String ErrorMasg = "BAnalysis Error. BAnalysis.ProcessNumber: Number = %s";
         
         Integer TZoneID = Integer.MIN_VALUE;
         int CodeID = Integer.MIN_VALUE;
@@ -180,7 +193,7 @@ public class BAnalysis
                 }
                 else
                 {
-                    String Msg =  String.format(ErrorMasg,  Long.toString(RecordID), Number);
+                    String Msg =  String.format(ErrorMasg, Number);
                     throw new Exception(Msg);
                 }
             }
@@ -196,7 +209,7 @@ public class BAnalysis
 
         if (i <= 0)
         {
-            String Msg =  String.format(ErrorMasg,  Long.toString(RecordID), Number);
+            String Msg =  String.format(ErrorMasg, Number);
             throw new Exception(Msg);
         }//if
         return ProcessRes;
