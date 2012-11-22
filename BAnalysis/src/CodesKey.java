@@ -1,13 +1,6 @@
-/**
- * Created by IntelliJ IDEA.
- * User: Dima
- * Date: 17.11.12
- * Time: 19:21
- * To change this template use File | Settings | File Templates.
- */
 public  class CodesKey
 {
-    private int m_ServiceGroupID;
+	private int m_ServiceGroupID;
     private byte m_TZoneMapID;
 
     public CodesKey(int ServiceGroupID, byte TZoneMapID)
