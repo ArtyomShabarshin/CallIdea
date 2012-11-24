@@ -9,6 +9,9 @@
 	<item value="0" key="CallHierarchyViewPart.call_mode"/>
 	<list key="SearchScopeActionGroup.working_set">
 	</list>
+	<section name="OptionalMessageDialog.hide.">
+		<item value="true" key="org.eclipse.jdt.ui.typecomment.deprecated"/>
+	</section>
 	<section name="completion_proposal_size">
 	</section>
 	<section name="JavaElementSearchActions">
@@ -36,6 +39,7 @@
 		<item value="false" key="jarOptionsWizardPage.STORE_USE_SRC_FOLDERS"/>
 		<item value="" key="jarOptionsWizardPage.DESCRIPTION_LOCATION"/>
 		<list key="JarPackageWizardPage.DESTINATION_NAMES_ID">
+			<item value="CallIdea\bin\CallIdea.jar"/>
 			<item value="BAnalysis\bin\BAnalysis.jar"/>
 			<item value="BAnalysis/bin/BAnalysis.jar"/>
 		</list>
@@ -47,6 +51,11 @@
 		<item value="true" key="SearchInProjects"/>
 		<item value="true" key="SearchInAppLibs"/>
 		<item value="true" key="SearchInSources"/>
+	</section>
+	<section name="NewClassWizardPage">
+		<item value="false" key="create_constructor"/>
+		<item value="true" key="create_main"/>
+		<item value="false" key="create_unimplemented"/>
 	</section>
 	<section name="CallHierarchySearchScope">
 	</section>
