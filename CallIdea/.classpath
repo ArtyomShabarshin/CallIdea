@@ -67,5 +67,8 @@
 	<classpathentry kind="lib" path="C:/Hadoop/hadoop-1.1.0-SNAPSHOT/hadoop-core-1.1.0-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="C:/Hadoop/hadoop-1.1.0-SNAPSHOT/hadoop-client-1.1.0-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="C:/Hadoop/hadoop-1.1.0-SNAPSHOT/hadoop-ant-1.1.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="C:/Hadoop/pig-0.9.3-SNAPSHOT/pig-0.9.3-SNAPSHOT.jar"/>
+	<classpathentry kind="var" path="HADOOP_CONF_DIR"/>
+	<classpathentry kind="var" path="PIG_CLASSPATH"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
