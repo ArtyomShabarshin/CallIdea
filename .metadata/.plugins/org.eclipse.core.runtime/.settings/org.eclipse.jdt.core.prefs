@@ -1,7 +1,11 @@
 eclipse.preferences.version=1
+org.eclipse.jdt.core.classpathVariable.ECLIPSE_HOME=C\:/Program Files (x86)/eclipse
+org.eclipse.jdt.core.classpathVariable.HADOOP_CONF_DIR=C\:/Hadoop/hadoop-1.1.0-SNAPSHOT/conf
 org.eclipse.jdt.core.classpathVariable.JRE_LIB=C\:/Program Files/Java/jre7/lib/rt.jar
 org.eclipse.jdt.core.classpathVariable.JRE_SRC=
 org.eclipse.jdt.core.classpathVariable.JRE_SRCROOT=
+org.eclipse.jdt.core.classpathVariable.JUNIT_HOME=C\:/Program Files (x86)/eclipse/plugins/org.junit_3.8.2.v3_8_2_v20100427-1100/
+org.eclipse.jdt.core.classpathVariable.PIG_CLASSPATH=C\:/Hadoop/hadoop-1.1.0-SNAPSHOT/conf
 org.eclipse.jdt.core.codeComplete.visibilityCheck=enabled
 org.eclipse.jdt.core.compiler.codegen.inlineJsrBytecode=enabled
 org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.7
