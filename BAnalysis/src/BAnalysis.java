@@ -4,6 +4,7 @@ import java.util.*;
 
 import java.io.IOException;
 import org.apache.pig.EvalFunc;
+import org.apache.pig.data.DataByteArray;
 import org.apache.pig.data.Tuple;
 
 public class BAnalysis extends EvalFunc<String>
@@ -143,7 +144,7 @@ public class BAnalysis extends EvalFunc<String>
         if (input == null || input.size() == 0)
             return null;
 
-        String number = (String)input.get(0);
+        String number = ((DataByteArray)input.get(0)).toString();
         
         byte RecordTypeID = 0;
         byte TZoneMapID = 0;
