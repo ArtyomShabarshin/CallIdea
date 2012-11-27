@@ -36,7 +36,7 @@ public class BAnalysis extends EvalFunc<String>
 
     // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
     public BAnalysis(/*String ConStr, Configuration Config*/)    throws   SQLException
-    {
+    {    	
     	String ConStr = "jdbc:sqlserver://localhost;databaseName=Billing;integratedSecurity=false;user=sa;password=m367st;";
         //ErrorManager.ErrorProcessor.OnWarning("BAnalysis", 10123);
         if (!m_IsCaseSensitive)
