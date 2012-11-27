@@ -31,17 +31,47 @@ public class Main {
 			PigServer pigServer = new PigServer(ExecType.MAPREDUCE);
 			pigServer.registerJar("C:/git/CallIdea/BAnalysis/bin/BAnalysis.jar");
 			pigServer.registerJar("C:/git/CallIdea/AutoIncrement/bin/AutoIncrement.jar");
-			pigServer.registerScript("C:/git/CallIdea/CallIdea/pigs/prepare.pig");			
+			pigServer.registerScript("C:/git/CallIdea/CallIdea/pigs/prepare.pig");						
 		} catch (ExecException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}	   	    
+		}	   	
 	    
+	    Long count = numbersCount(hdfsAdminService);
+	      
 	    hdfsAdminService.close();
 	}
+
+	private static long numbersCount(HdfsService hdfsAdminService) {
+	    FileStatus[] fsStatus = hdfsAdminService.list("/user/hadoop/res/count");
+	    if(fsStatus == null || fsStatus.length == 0) return 0L;
+
+	    for (FileStatus status : fsStatus) {
+	      if ( status.isDir() || !status.getPath().toString().startsWith("part") ) {
+	        continue;
+	      }
+	       
+	      Long actual = hdfsAdminService.read(new HdfsService.ReadCallback<Long>() {
+
+	        @Override
+	        public Long read(BufferedReader reader) throws IOException {	        	
+	          String line = null;
+	          while ((line = reader.readLine()) != null) {
+	            return Long.parseLong(line);
+	          }
+	          return 0L;
+	        }
+	        
+	      }, status.getPath());
+	      
+	      return actual;
+	    }
+	    
+	    return 0L;
+	  }
 	
 	  private static void validateResult(HdfsService hdfsAdminService, String dir) {
 		    FileStatus[] fsStatus = hdfsAdminService.list(dir);
