@@ -1,4 +1,4 @@
-raw = LOAD '/user/hadoop/cdr/TTHuaweiUMTS_Plain.csv' USING PigStorage(';');
+raw = LOAD '/user/callidea/cdr/TTHuaweiUMTS_Plain.csv' USING PigStorage('\t');
 
 clean = FILTER raw BY $0 == 0; 
 calls = FOREACH clean GENERATE $5 as ANumber, BAnalysis($11) as BNumber;
@@ -16,6 +16,6 @@ calls_index = FOREACH calls_index_tmp2 GENERATE $4 as ANumber, $5 as BNumber, $3
 numbers_group = GROUP numbers ALL;
 numbers_count = FOREACH numbers_group GENERATE COUNT(numbers);
 
-STORE calls_index INTO '/user/hadoop/res/calls' USING PigStorage('\t');
-STORE numbers_count INTO '/user/hadoop/res/count' USING PigStorage('\t');
-STORE numbers_index INTO '/user/hadoop/res/numbers' USING PigStorage('\t');
+STORE calls_index INTO '/user/callidea/res/calls' USING PigStorage('\t');
+STORE numbers_count INTO '/user/callidea/res/count' USING PigStorage('\t');
+STORE numbers_index INTO '/user/callidea/res/numbers' USING PigStorage('\t');

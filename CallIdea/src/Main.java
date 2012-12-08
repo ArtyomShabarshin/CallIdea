@@ -25,10 +25,11 @@ public class Main {
 		FileSystem hdfs = hdfsAdminService.getFileSystem();				
 		
 	    try {
-			hdfs.copyFromLocalFile(false, true, new Path(path), new Path("/user/hadoop/cdr/"));
-			hdfs.delete(new Path("/user/hadoop/res"), true);
+			hdfs.delete(new Path("/user/callidea"), true);
+			hdfs.copyFromLocalFile(false, true, new Path(path), new Path("/user/callidea/cdr/TTHuaweiUMTS_Plain.csv"));
 
 			PigServer pigServer = new PigServer(ExecType.MAPREDUCE);
+			pigServer.registerJar("C:/Program Files/Microsoft JDBC Driver 4.0 for SQL Server/sqljdbc_4.0/enu/sqljdbc4.jar");
 			pigServer.registerJar("C:/git/CallIdea/BAnalysis/bin/BAnalysis.jar");
 			pigServer.registerJar("C:/git/CallIdea/AutoIncrement/bin/AutoIncrement.jar");
 			pigServer.registerScript("C:/git/CallIdea/CallIdea/pigs/prepare.pig");						
@@ -46,7 +47,7 @@ public class Main {
 	}
 
 	private static long numbersCount(HdfsService hdfsAdminService) {
-	    FileStatus[] fsStatus = hdfsAdminService.list("/user/hadoop/res/count");
+	    FileStatus[] fsStatus = hdfsAdminService.list("/user/callidea/res/count");
 	    if(fsStatus == null || fsStatus.length == 0) return 0L;
 
 	    for (FileStatus status : fsStatus) {
