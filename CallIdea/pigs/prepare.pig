@@ -1,7 +1,8 @@
 raw = LOAD '/user/callidea/cdr/TTHuaweiUMTS_Plain.csv' USING PigStorage('\t');
 
 clean = FILTER raw BY $0 == 0; 
-calls = FOREACH clean GENERATE $5 as ANumber, BAnalysis($11) as BNumber;
+calls_raw = FOREACH clean GENERATE $5 as ANumber, BAnalysis($11) as BNumber;
+calls = FILTER calls_raw BY BNumber != 'error'; 
 
 anumbers = FOREACH calls GENERATE ANumber as Number;
 bnumbers = FOREACH calls GENERATE BNumber as Number;
