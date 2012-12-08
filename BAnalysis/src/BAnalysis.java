@@ -9,74 +9,50 @@ import org.apache.pig.data.Tuple;
 
 public class BAnalysis extends EvalFunc<String>
 {
-    //РќРѕРјРµСЂ, РїРѕРґРјРµРЅСЏСЋС‰РёР№ Р‘-РЅРѕРјРµСЂ РЅРµ РЅР°Р№РґРµРЅРЅС‹Р№ РІ РЅР°РїСЂР°РІР»РµРЅРёСЏС…
-    private String m_UndefNumber = "C";
-
-    //РћРіСЂР°РЅРёС‡РµРЅРёРµ РЅР° РєРѕР»РёС‡РµСЃС‚РІРѕ РёС‚РµСЂР°С†РёР№
     private final int m_IterationLimit = 1000;
 
-    // Р�РјСЏ С…СЂР°РЅРёРјРѕР№ РїСЂРѕС†РµРґСѓСЂС‹, Р·Р°РіСЂСѓР¶Р°СЋС‰Р°СЏ С‚Р°Р±Р»РёС†Сѓ Р‘-Р°РЅР°Р»РёР·Р°
     private final String m_SProcName = "ewr_.p_refresh_codes";
 
-    // Р‘Р°Р·РѕРІР°СЏ TZoneMap
     private final byte m_BaseTZoneMapID = 0;
 
-    // RecordTypeID РґР»СЏ РІС…РѕРґСЏС‰РµРіРѕ Р·РІРѕРЅРєР°
     private final int m_IncomingRecordTypeID = 1;
 
-    // Р§СѓРІСЃС‚РІРёС‚Р»СЊРЅРѕСЃС‚СЊ Рє СЂРµРіРёСЃС‚СЂСѓ РїСЂРё СЃСЂР°РІРЅРµРЅРёРё Р±-РЅРѕРјРµСЂР° Рё РєРѕРґР°
     private final Boolean m_IsCaseSensitive = false;
 
-    // РҐСЌС€-С‚Р°Р±Р»РёС†Р° РєРѕРґРѕРІ. РќР° РІС…РѕРґРµ Code, ServiceGroupID, TZoneMapID, РЅР° РІС‹С…РѕРґРµ СЃРїРёСЃРѕРє СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ РѕС‚Р»РёС‡Р°СЋС‰РёС…СЃСЏ РїРѕ MinLen, MaxLen.
+    private String m_UndefNumber = "C";
+
     private java.util.Map<CodesKey, java.util.HashMap<String, List<CodesRow>>> m_CodesTable;
 
-    // РњРЅРѕР¶РµСЃС‚РІРѕ РїСЂРµС„РёРєСЃРѕРІ РґР»СЏ РѕС‚СЃРµС‡РєРё РЅРµРїРѕРґС…РѕРґСЏС‰РёС… РІР°СЂРёР°РЅС‚РѕРІ
     private java.util.HashSet<String> m_PrefixSet;
 
-
-    // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
-    public BAnalysis(/*String ConStr, Configuration Config*/)    throws   SQLException
+    public BAnalysis() throws SQLException, ClassNotFoundException
     {    	
     	String ConStr = "jdbc:sqlserver://localhost;databaseName=EWRating;integratedSecurity=false;user=sa;password=m367st;";
-        //ErrorManager.ErrorProcessor.OnWarning("BAnalysis", 10123);
-        if (!m_IsCaseSensitive)
+
+    	if (!m_IsCaseSensitive)
         {
             m_UndefNumber = m_UndefNumber.toLowerCase();
         }
+    	
         LoadTable(ConStr);
-
-        //ErrorManager.ErrorProcessor.OnWarning("BAnalysis loaded. " + count + " rows.", 10124);
     }    
   
-    ///Р—Р°РіСЂСѓР·РёС‚СЊ codes  
-    private int LoadTable(String ConStr)  throws   SQLException
+    private int LoadTable(String ConStr) throws SQLException, ClassNotFoundException
     {
         int count = 0;
         ResultSet DBDataSet = null;
         Connection Con = null;
+        
         try
         {
             m_CodesTable = new java.util.HashMap<CodesKey, HashMap<String, List<CodesRow>>>();
             m_PrefixSet = new java.util.HashSet<String>();
-            try
-            {
-                //Loading the driver...
-                Class.forName( "com.microsoft.sqlserver.jdbc.SQLServerDriver" );
-            }
-            catch( java.lang.ClassNotFoundException e )
-            {
-                return -1;
-            }
 
-            //РЅСѓР¶РЅРѕ РїРѕС…РѕСЂРѕС€РµРјСѓ РїРµСЂРµРґР°РІР°С‚СЊ СЃР°РјРѕ СЃРѕРµРґРёРЅРµРЅРёРµ, С‡С‚РѕР±С‹ РїРѕСЃС‚РѕСЏРЅРЅРѕ РµРіРѕ РЅРµ РѕС‚РєСЂС‹РІР°С‚СЊ
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
       		Con = DriverManager.getConnection(ConStr);
       		
             Statement Stm = Con.createStatement();
-//            IDataBaseWrapperCommand Command;
-//            Command = dbw.CreateCommand(m_SProcName, System.Data.CommandType.StoredProcedure);
-//            IDataBaseWrapperDataSet DBDataSet = Command.FillDataSet();
-            String Query =  "exec "   + m_SProcName;
+            String Query =  "exec " + m_SProcName;
             DBDataSet = Stm.executeQuery(Query);
 
             while (DBDataSet.next())
@@ -115,16 +91,6 @@ public class BAnalysis extends EvalFunc<String>
             }//while
 
         }
-        //РµСЃР»Рё РЅРµ РЅР°Р№РґРµРЅРѕ РїРѕР»Рµ РїРѕ РёРјРµРЅРё  (РїРѕРєР° СЌС‚РѕС‚ РѕР±СЂР°Р±РѕС‚С‡РёРє Р·Р°РєРѕРјРµРЅС‚СЂР°РёР»)
-//        catch (SQLException ex)
-//        {
-//            ex.printStackTrace();
-//        }
-        //РјРѕР¶РµС‚ РїСЂРёРґС‚Рё DBException РїСЂРё РїРѕР»СѓС‡РµРЅРёРё РґР°РЅРЅС‹С…, РјРѕР¶РµС‚ РїСЂРёР№С‚Рё Reference null РїСЂРё РєРѕРЅРІРµСЂСЃРёРё РїРѕР»РµР№, РєРѕС‚РѕСЂС‹Рµ РЅРµ РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ null
-        catch (Exception ex)
-        {
-            ex.printStackTrace(); //
-        }
         finally
         {
             if (DBDataSet != null)
@@ -147,21 +113,23 @@ public class BAnalysis extends EvalFunc<String>
         String number = ((DataByteArray)input.get(0)).toString();
         
         byte RecordTypeID = 0;
-        byte TZoneMapID = 0;
+        byte TZoneMapID = 1;
         int ServiceGroupID = 0;
         
         try {
-			ProcessNumber(RecordTypeID, TZoneMapID, ServiceGroupID, number);
-		} catch (Exception e) {			
+			
+	        CodeResult res = ProcessNumber(RecordTypeID, TZoneMapID, ServiceGroupID, number);
+	        return res.GetNumber();
+	        
+		} catch (Exception e) {		
+			return "error";
 		}
         
-        return number;
     }
     
-    // РџСЂРёРјРµРЅРµРЅРёРµ РїСЂР°РІРёР» Р‘-Р°РЅР°Р»РёР·Р°
-    public CodeResult ProcessNumber(byte RecordTypeID, byte TZoneMapID, int ServiceGroupID, String Number) throws   Exception
+    public CodeResult ProcessNumber(byte RecordTypeID, byte TZoneMapID, int ServiceGroupID, String Number) throws Exception
     {
-        final String ErrorMasg = "BAnalysis Error. BAnalysis.ProcessNumber: Number = %s";
+        final String ErrorMsg = "BAnalysis Error. BAnalysis.ProcessNumber: Number = %s";
         
         Integer TZoneID = Integer.MIN_VALUE;
         int CodeID = Integer.MIN_VALUE;
@@ -184,8 +152,7 @@ public class BAnalysis extends EvalFunc<String>
             Number = m_UndefNumber;
         }
 
-        int i;
-        for (i = m_IterationLimit; i > 0; --i)
+        for (int i = m_IterationLimit; i > 0; --i)
         {
             CodesRow ResultCode = SinglePass(TZoneMapID, ServiceGroupID, Number);
             if (ResultCode == null)
@@ -196,7 +163,7 @@ public class BAnalysis extends EvalFunc<String>
                 }
                 else
                 {
-                    String Msg =  String.format(ErrorMasg, Number);
+                    String Msg =  String.format(ErrorMsg, Number);
                     throw new Exception(Msg);
                 }
             }
@@ -210,21 +177,9 @@ public class BAnalysis extends EvalFunc<String>
             }
         }//for
 
-        if (i <= 0)
-        {
-            String Msg =  String.format(ErrorMasg, Number);
-            throw new Exception(Msg);
-        }//if
         return ProcessRes;
-    }//function
+    }
 
-    /// <summary>
-    /// Р�С‚РµСЂР°С†РёСЏ РїРѕРёСЃРєР° РїСЂР°РІРёР»Р° Р‘-Р°РЅР°Р»РёР·Р°
-    /// </summary>
-    /// <param name="TZoneMapID"></param>
-    /// <param name="ServiceGroupID"></param>
-    /// <param name="Number"></param>
-    /// <returns> РџРѕРґС…РѕРґСЏС‰РµРµ РїСЂР°РІРёР»Рѕ </returns>
     private CodesRow SinglePass(Byte TZoneMapID, int ServiceGroupID, String Number)
     {
         String TargetNumber = Number;
@@ -265,10 +220,8 @@ public class BAnalysis extends EvalFunc<String>
         }
 
         return result;
-    }//function
+    }
 
-
-   /// Р�С‰РµС‚ РїРѕРґС…РѕРґСЏС‰РёРµ РїСЂР°РІРёР»Р° РґР»СЏ РїСЂРµС„РёРєСЃР°
     private CodesRow FindRow(String OriginalNumber, String CheckedNumber, HashMap<String, List<CodesRow>> Codes)
     {
         List<CodesRow> CodesRows;

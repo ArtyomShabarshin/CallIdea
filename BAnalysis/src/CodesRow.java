@@ -36,7 +36,7 @@ public class CodesRow
         {
             Number = Number.substring(m_LeftDel);
         }
-        if (!(m_LeftAdd != null && !m_LeftAdd.isEmpty()) )
+        if (m_LeftAdd != null && !m_LeftAdd.isEmpty())
         {
             Number = m_LeftAdd + Number;
         }
