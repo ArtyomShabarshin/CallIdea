@@ -37,7 +37,7 @@ public class BAnalysis extends EvalFunc<String>
     // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
     public BAnalysis(/*String ConStr, Configuration Config*/)    throws   SQLException
     {    	
-    	String ConStr = "jdbc:sqlserver://localhost;databaseName=Billing;integratedSecurity=false;user=sa;password=m367st;";
+    	String ConStr = "jdbc:sqlserver://localhost;databaseName=EWRating;integratedSecurity=false;user=sa;password=m367st;";
         //ErrorManager.ErrorProcessor.OnWarning("BAnalysis", 10123);
         if (!m_IsCaseSensitive)
         {
@@ -95,8 +95,8 @@ public class BAnalysis extends EvalFunc<String>
                 int CodeID = DBDataSet.getInt("CodeID");
                 byte TZoneMapID = DBDataSet.getByte("TZoneMapID");
                 int ServiceGroupID = DBDataSet.getInt("ServiceGroupID");
-                int MinLen = DBDataSet.getByte("MinLen");
-                int MaxLen = DBDataSet.getByte("MaxLen");
+                int MinLen = DBDataSet.getInt("MinLen");
+                int MaxLen = DBDataSet.getInt("MaxLen");
 
                 CodesKey CurrentKey = new CodesKey(ServiceGroupID, TZoneMapID);
                 CodesRow CurrentRow = new CodesRow(MinLen, MaxLen, CodeID, TZoneID, LeftDel, LeftAdd);
